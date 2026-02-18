@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Bava ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --deep-red: #d32f2f;
+            --soft-white: #fff0f5;
+            --gold: #ffd700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffe4e1, #ffc0cb);
+            color: #4a4a4a;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Floating Hearts Background */
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+            animation: floatUp 6s linear infinite;
+            bottom: -20px;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--deep-red);
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.6);
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Layout */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.2);
+            opacity: 0; /* For scroll animation */
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Start Screen */
+        #start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffb7c5;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glow-btn {
+            background: var(--deep-red);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-family: 'Dancing Script', cursive;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--deep-red);
+            animation: pulse 2s infinite;
+            transition: transform 0.3s;
+        }
+
+        .glow-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(211, 47, 47, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+        }
+
+        /* Typing Effect */
+        #typing-text {
+            font-weight: 500;
+            color: #d63384;
+            min-height: 150px;
+            white-space: pre-line;
+        }
+
+        /* Quiz */
+        .quiz-option {
+            background: white;
+            border: 2px solid var(--primary-pink);
+            padding: 10px;
+            margin: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .quiz-option.selected {
+            background: var(--deep-red);
+            color: white;
+        }
+
+        /* Final Buttons */
+        .choice-btn {
+            padding: 10px 30px;
+            font-size: 1.2rem;
+            margin: 10px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-yes { background: #4caf50; color: white; position: relative; }
+        .btn-no { background: #aaa; color: white; }
+
+        @keyframes playfulBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .bouncing {
+            animation: playfulBounce 0.5s ease 5; /* Runs 5 times */
+        }
+
+        /* Popup */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.3);
+            z-index: 1000;
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 90%;
+            max-width: 400px;
+        }
+        .popup.show { transform: translate(-50%, -50%) scale(1); }
+        
+        .overlay-dim {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        /* Final Screen */
+        #final-screen {
+            display: none;
+            padding-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_145e52c792.mp3?filename=romantic-piano-125436.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="heart-bg" id="heart-bg"></div>
+
+    <div id="start-screen">
+        <h1>For You...</h1>
+        <p>Turn up your volume 🎵</p>
+        <button class="glow-btn" onclick="startExperience()">Open Letter ❤️</button>
+    </div>
+
+    <div class="container" id="main-content" style="display: none;">
+        
+        <div class="section">
+            <h1>Hey Bava ❤️</h1>
+            <p>From the moment you came into my life, everything changed in the most beautiful way…<br>This is our little love story.</p>
+        </div>
+
+        <div class="section">
+            <h2>Our Journey</h2>
+            <p>Our journey may not be perfect, but it is real and beautiful.<br>
+            Every smile, every fight, every tear, every laugh made us stronger.<br>
+            I am grateful for every moment we have shared together.</p>
+        </div>
+
+        <div class="section">
+            <h2>Our Meet</h2>
+            <p>The moment I met you, I knew my life was about to change forever.<br>
+            It was not just a meeting of eyes, but a meeting of souls.<br>
+            That day, I found the piece of my heart I did not know was missing.</p>
+        </div>
+
+        <div class="section">
+            <h2>With You Always</h2>
+            <p>Every day with you feels like a blessing.<br>
+            Through ups and downs, your presence makes everything worthwhile.<br>
+            You are my peace, my joy, and my forever.</p>
+        </div>
+
+        <div class="section">
+            <h2>Our Future</h2>
+            <p>I see a future filled with love, laughter, and endless memories.<br>
+            I cannot wait to build a lifetime with you, growing old and loving you more each day.</p>
+        </div>
+
+        <div class="section">
+            <h2>Grow Older With You</h2>
+            <p>I want to grow old with you, holding your hand in every season of life.<br>
+            Loving you more and more with every passing year.</p>
+        </div>
+
+        <div class="section">
+            <h2>Family With You</h2>
+            <p>Building a family with you is my greatest dream.<br>
+            A home filled with love, warmth, laughter, and happiness.<br>
+            You are not just my love, you are my family.</p>
+        </div>
+
+        <div class="section">
+            <h2>My Heart Speaks</h2>
+            <div id="typing-text"></div>
+        </div>
+
+        <div class="section">
+            <h2>Love Quiz 😜</h2>
+            <div id="quiz-container">
+                <div class="quiz-q">
+                    <p>Who is more crazy in love? 😜</p>
+                    <button class="quiz-option" onclick="selectOption(this)">Me</button>
+                    <button class="quiz-option" onclick="selectOption(this)">You</button>
+                    <button class="quiz-option" onclick="selectOption(this)">Both</button>
+                </div>
+                <div class="quiz-q">
+                    <p>Who thinks about the other more? 🤭</p>
+                    <button class="quiz-option" onclick="selectOption(this)">Me</button>
+                    <button class="quiz-option" onclick="selectOption(this)">You</button>
+                </div>
+                <div class="quiz-q">
+                    <p>Who is more possessive? 😏</p>
+                    <button class="quiz-option" onclick="selectOption(this)">Me</button>
+                    <button class="quiz-option" onclick="selectOption(this)">You</button>
+                </div>
+                <div class="quiz-q">
+                    <p>Who will never leave? ❤️</p>
+                    <button class="quiz-option" onclick="selectOption(this)">Me</button>
+                    <button class="quiz-option" onclick="selectOption(this)">You</button>
+                    <button class="quiz-option" onclick="selectOption(this)">Us Forever</button>
+                </div>
+                <div class="quiz-q">
+                    <p>Who is the luckiest? 🍀</p>
+                    <button class="quiz-option" onclick="selectOption(this)">Me</button>
+                    <button class="quiz-option" onclick="selectOption(this)">You</button>
+                </div>
+                <div id="quiz-result" style="margin-top: 15px; font-weight: bold; color: var(--deep-red); display:none;">
+                    Looks like we are perfectly crazy for each other 😍
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Final Surprise</h2>
+            <button class="glow-btn" onclick="revealValentine()">CLICK FOR FINAL SURPRISE 💝</button>
+        </div>
+
+        <div class="section" id="valentine-q" style="display: none;">
+            <h2>Will You Be My Valentine? ❤️</h2>
+            <div style="margin-top: 20px;">
+                <button id="yes-btn" class="choice-btn btn-yes" onclick="handleYes()">YES 💖</button>
+                <button class="choice-btn btn-no" onclick="alert('Oh come on, try the other button! 😜')">NO 🙈</button>
+            </div>
+        </div>
+        
+        <div class="section" id="final-screen-content" style="display: none;">
+            <h1>I LOVE YOU FOREVER AND EVER BAVA ❤️</h1>
+            <p>I promise to stand by you,<br>
+            to support you,<br>
+            to fight for you,<br>
+            to love you in every situation.<br>
+            Through smiles and tears,<br>
+            through good days and bad days,<br>
+            I will always be yours.</p>
+            <h3>From your darling 💋</h3>
+        </div>
+
+        <br><br><br>
+    </div>
+
+    <div class="overlay-dim" id="overlay"></div>
+    <div class="popup" id="popup">
+        <h2>You just made me the happiest person alive ❤️</h2>
+        <p>Thank you for choosing me,<br>thank you for loving me,<br>thank you for being mine.</p>
+        <button class="glow-btn" style="font-size: 1rem; padding: 10px 20px;" onclick="closePopup()">See My Promise</button>
+    </div>
+
+    <script>
+        // --- Music & Start ---
+        function startExperience() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('bg-music').play().catch(e => console.log("Audio play failed usually due to browser policy: ", e));
+            createHearts();
+            observeSections();
+            startTyping();
+        }
+
+        // --- Floating Hearts Animation ---
+        function createHearts() {
+            const heartContainer = document.getElementById('heart-bg');
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+                heartContainer.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 6000);
+            }, 300);
+        }
+
+        // --- Scroll Animations ---
+        function observeSections() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // --- Typing Effect ---
+        const typingText = `My heart speaks your name in every beat…
+        In every silence, I hear you.
+        In every crowd, I look for you.
+        You are my safe place,
+        my happiness,
+        my peace,
+        my strength,
+        my forever.
+        No matter what happens,
+        no matter where life takes us,
+        my heart will always choose you.
+        I love you more than words can ever explain.
+        I love you endlessly. ❤️`;
+
+        let charIndex = 0;
+        function startTyping() {
+            // Wait until the section is roughly in view or just start a bit delayed
+            // For simplicity, we trigger it, but use IntersectionObserver to only type when viewed?
+            // Let's just type it slowly.
+            const typeContainer = document.getElementById('typing-text');
+            
+            function type() {
+                if (charIndex < typingText.length) {
+                    typeContainer.textContent += typingText.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(type, 50);
+                }
+            }
+            
+            // Trigger typing when user scrolls to it
+            const observer = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting && charIndex === 0) {
+                    type();
+                }
+            });
+            observer.observe(typeContainer);
+        }
+
+        // --- Quiz Logic ---
+        let clicks = 0;
+        function selectOption(btn) {
+            // Visual selection
+            let parent = btn.parentElement;
+            let siblings = parent.getElementsByClassName('quiz-option');
+            for(let sib of siblings) sib.classList.remove('selected');
+            btn.classList.add('selected');
+            
+            clicks++;
+            // Check if all answered (rough logic: 5 questions)
+            // Just show result after a few clicks for fun
+            if(clicks >= 5) {
+                document.getElementById('quiz-result').style.display = 'block';
+            }
+        }
+
+        // --- Final Surprise Logic ---
+        function revealValentine() {
+            document.getElementById('valentine-q').style.display = 'block';
+            document.getElementById('valentine-q').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        let yesClickCount = 0;
+        const yesBtn = document.getElementById('yes-btn');
+
+        function handleYes() {
+            if (yesClickCount === 0) {
+                // First Click: Bounce 5 times
+                yesBtn.classList.add('bouncing');
+                
+                // Listen for animation end
+                yesBtn.addEventListener('animationend', function() {
+                    yesBtn.classList.remove('bouncing');
+                    yesClickCount = 1; // Ready for second click
+                }, { once: true });
+                
+            } else if (yesClickCount === 1) {
+                // Second Click: Show Popup
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('popup').classList.add('show');
+            }
+        }
+
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').classList.remove('show');
+            
+            // Hide everything else and show final screen
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(s => s.style.display = 'none'); // Hide all previous sections
+            
+            const final = document.getElementById('final-screen-content');
+            final.style.display = 'block';
+            final.classList.add('visible');
+            window.scrollTo(0, 0);
+            
+            // Create massive hearts explosion
+            for(let i=0; i<50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '💖';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = '2s';
+                    document.getElementById('heart-bg').appendChild(heart);
+                }, i * 50);
+            }
+        }
+
+    </script>
+</body>
+</html>
